@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 /* ================= Library Page Styles ================= */
 
 body {
