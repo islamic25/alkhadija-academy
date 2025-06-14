@@ -1,6 +1,20 @@
 * {
   box-sizing: border-box;
 }
+button, input, textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.contact-form label {
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 5px;
+}
 /* ================= Library Page Styles ================= */
 
 body {
