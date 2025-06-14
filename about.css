@@ -1,0 +1,97 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Header */
+header {
+  background-color: #005f73;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header nav a.active {
+  text-decoration: underline;
+}
+
+/* Back Arrow */
+.back-arrow {
+  display: inline-block;
+  margin: 20px;
+  text-decoration: none;
+  color: #005f73;
+  font-weight: bold;
+}
+
+/* About Section */
+.about-section {
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.about-section h2 {
+  text-align: center;
+  color: #003b4f;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.feature-box {
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-box i {
+  font-size: 2.5rem;
+  color: #005f73;
+  margin-bottom: 10px;
+}
+
+.feature-box h3 {
+  margin-bottom: 10px;
+  color: #003b4f;
+}
+
+/* Footer */
+footer {
+  background-color: #003b4f;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: 50px;
+}
