@@ -1,5 +1,4 @@
-<img src="acadmy.jpg.jpg" alt="islamic academy">
-<img src="" alt="Quran course">
+<img src="acadmy.jpg" alt="Islamic Academy">
 <img src="quran.jfif" class="slide active" alt="Quran Study">
-      <img src="acadmy.jpg.jpg" class="slide" alt="Academy Image">
-      <img src="fiqah.png" class="slide" alt="Fiqah Class">
+<img src="acadmy.jpg" class="slide" alt="Academy Image">
+<img src="fiqah.png" class="slide" alt="Fiqah Class">
