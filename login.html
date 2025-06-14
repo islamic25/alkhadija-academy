@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body class="login-background">
+
+  <div class="glow-bg"></div>
+  <a href="index.html" class="back-arrow"><i>&larr;</i> Back</a>
+
+  <section class="form-section glass-effect">
+    <h2>Login</h2>
+    <form class="form-box" onsubmit="return loginUser(event)">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage" style="color:red; margin-top: 10px;"></p>
+  </section>
+
+  <script>
+    function loginUser(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+    
+
+      const users = [
+        { email: "qazi123@gmail.com", password: "pass123" },
+        { email: "student2@example.com", password: "tajweed2024" }
+      ];
+
+      const foundUser = users.find(user => user.email === email && user.password === password);
+
+      if (foundUser) {
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userEmail", email);
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById("loginMessage").textContent = "Invalid email or password.";
+      }
+    }
+  </script>
+</body>
+</html>
