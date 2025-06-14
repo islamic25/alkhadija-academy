@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 /* Reset basic styling */
 * {
   margin: 0;
