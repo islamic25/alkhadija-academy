@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - AlKhadija Islamic Academy</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .dashboard-container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .profile-box {
+      text-align: center;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      margin-bottom: 10px;
+    }
+
+    .logout-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #e74c3c;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .dashboard-header h1 {
+      margin: 0 0 20px 0;
+      color: #2c3e50;
+    }
+
+    .dashboard-section {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-section h2 {
+      margin-top: 0;
+      color: #34495e;
+    }
+
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .timetable th,
+    .timetable td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .status-box {
+      background-color: #ffeeba;
+      padding: 10px;
+      border: 1px solid #ffc107;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    button.submit-btn {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button.submit-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Redirect if not logged in -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-box">
+        <img src="student.jpg" alt="Profile Picture" class="profile-pic" id="profilePic" />
+        <input type="file" id="profilePicInput" accept="image/*" />
+        <h3 id="studentName">Student Name</h3>
+        <p id="studentEmail">student@example.com</p>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <header class="dashboard-header">
+        <h1>Welcome to Your Dashboard</h1>
+      </header>
+
+      <!-- Courses -->
+      <section class="dashboard-section">
+        <h2>Your Courses</h2>
+        <ul>
+          <li>📖 Quran with Tajweed</li>
+          <li>🕌 Basic Islamic Studies</li>
+          <li>🌙 Fiqh and Hadith</li>
+        </ul>
+      </section>
+
+      <!-- Timetable -->
+      <section class="dashboard-section">
+        <h2>Class Timetable</h2>
+        <table class="timetable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Subject</th>
+              <th>Zoom Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monday</td>
+              <td>4:00 PM - 5:00 PM</td>
+              <td>Quran with Tajweed</td>
+              <td><a href="#">Join</a></td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>4:00 PM - 5:00 PM</td>
+              <td>Fiqh & Hadith</td>
+              <td><a href="#">Join</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Payment Upload -->
+      <section class="dashboard-section">
+        <h2>Upload Your Payment</h2>
+
+        <label for="amount">Amount (PKR)</label>
+        <input type="number" id="amount" placeholder="Enter amount" />
+
+        <label for="method">Payment Method</label>
+        <select id="method">
+          <option value="JazzCash">JazzCash</option>
+          <option value="EasyPaisa">EasyPaisa</option>
+          <option value="Bank">Bank Transfer</option>
+        </select>
+
+        <label for="transaction">Transaction ID</label>
+        <input type="text" id="transaction" placeholder="Enter Transaction ID" />
+
+        <label for="screenshot">Upload Screenshot</label>
+        <input type="file" id="screenshot" accept="image/*" />
+
+        <div class="status-box">
+          <strong>Status:</strong> Pending (will be verified by admin)
+        </div>
+
+        <button onclick="submitPayment()" class="submit-btn">Submit Payment</button>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const profilePic = document.getElementById("profilePic");
+    const profilePicInput = document.getElementById("profilePicInput");
+
+    // Load saved data
+    document.getElementById("studentName").textContent = localStorage.getItem("userName") || "Student Name";
+    document.getElementById("studentEmail").textContent = localStorage.getItem("userEmail") || "student@example.com";
+    if (localStorage.getItem("profilePicData")) {
+      profilePic.src = localStorage.getItem("profilePicData");
+    }
+
+    // Save new profile picture
+    profilePicInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic.src = e.target.result;
+          localStorage.setItem("profilePicData", e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    function submitPayment() {
+      const amount = document.getElementById("amount").value;
+      const method = document.getElementById("method").value;
+      const transaction = document.getElementById("transaction").value;
+      const file = document.getElementById("screenshot").files[0];
+
+      if (!amount || !method || !transaction || !file) {
+        alert("Please fill all fields and upload your screenshot.");
+        return;
+      }
+
+      alert("Payment submitted successfully!\nStatus: Pending (Admin will verify it).");
+
+      // Future: Save this data to Firebase or your backend
+    }
+  </script>
+</body>
+</html>
