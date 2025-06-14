@@ -95,3 +95,17 @@ footer {
   padding: 20px;
   margin-top: 50px;
 }
+/* Responsive section container */
+.about-container, .contact-container, .course-grid, .book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Images should resize */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
