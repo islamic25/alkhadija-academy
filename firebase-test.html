@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Test</title>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <h2>Testing Firebase Connection</h2>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCAAbxJ_tnUQCVLtJrBxPYKq7cYFnabhNk",
+      authDomain: "alkhadija-e0cbb.firebaseapp.com",
+      projectId: "alkhadija-e0cbb",
+      storageBucket: "alkhadija-e0cbb.appspot.com",
+      messagingSenderId: "129990677542",
+      appId: "1:129990677542:web:bf397865475d7c777d02e7"
+    };
+
+    try {
+      firebase.initializeApp(firebaseConfig);
+      console.log("✅ Firebase Connected:", firebase.app().name);
+      alert("✅ Firebase connected successfully!");
+    } catch (err) {
+      console.error("❌ Firebase NOT connected:", err);
+      alert("❌ Firebase NOT connected!");
+    }
+  </script>
+</body>
+</html>

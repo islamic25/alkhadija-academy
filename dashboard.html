@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - AlKhadija Islamic Academy</title>
+  <link rel="stylesheet" href="dashboard.css" />
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="profile-box">
+        <img src="default.jpg" alt="Profile Picture" class="profile-pic" id="profilePic" />
+        <input type="file" id="profilePicInput" accept="image/*" />
+        <h3 id="studentName">Loading...</h3>
+        <p id="studentEmail">Loading...</p>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="dashboard-header">
+        <h1>Welcome to Your Dashboard</h1>
+      </header>
+
+      <section class="dashboard-section">
+        <h2>Your Courses</h2>
+        <ul>
+          <li>📖 Quran with Tajweed</li>
+          <li>🕌 Basic Islamic Studies</li>
+          <li>🌙 Fiqh and Hadith</li>
+        </ul>
+      </section>
+
+      <section class="dashboard-section">
+        <h2>Class Timetable</h2>
+        <table class="timetable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Subject</th>
+              <th>Zoom Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monday</td>
+              <td>4:00 PM - 5:00 PM</td>
+              <td>Quran with Tajweed</td>
+              <td><a href="#">Join</a></td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>4:00 PM - 5:00 PM</td>
+              <td>Fiqh & Hadith</td>
+              <td><a href="#">Join</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Payment Upload Section -->
+      <section class="dashboard-section">
+        <h2>Upload Your Payment</h2>
+
+        <label for="amount">Amount (PKR)</label>
+        <input type="number" id="amount" placeholder="Enter amount" />
+
+        <label for="method">Payment Method</label>
+        <select id="method">
+          <option value="JazzCash">JazzCash</option>
+          <option value="EasyPaisa">EasyPaisa</option>
+          <option value="Bank">Bank Transfer</option>
+        </select>
+
+        <label for="transaction">Transaction ID</label>
+        <input type="text" id="transaction" placeholder="Enter Transaction ID" />
+
+        <label for="screenshot">Upload Screenshot</label>
+        <input type="file" id="screenshot" accept="image/*" />
+
+        <button onclick="submitPayment()" class="submit-btn">Submit Payment</button>
+
+        <h3>📄 Your Last Payment Status</h3>
+        <div id="paymentStatusBox">Loading...</div>
+      </section>
+
+      <!-- Payment History -->
+      <section class="dashboard-section">
+        <h2>Your Payment History</h2>
+        <div id="userPayments">Loading...</div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ✅ Firebase Config (fixed)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCAAbxJ_tnUQCVLtJrBxPYKq7cYFnabhNk",
+      authDomain: "alkhadija-e0cbb.firebaseapp.com",
+      projectId: "alkhadija-e0cbb",
+      storageBucket: "alkhadija-e0cbb.appspot.com",
+      messagingSenderId: "129990677542",
+      appId: "1:129990677542:web:bf397865475d7c777d02e7",
+      measurementId: "G-4DB1FCEB2P"
+    };
+
+    // ✅ Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+    let currentUser;
+
+    // ✅ Check if user is logged in and verified
+    auth.onAuthStateChanged(async user => {
+      if (!user || !user.emailVerified) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      currentUser = user;
+      document.getElementById("studentEmail").textContent = user.email;
+
+      const doc = await db.collection("users").doc(user.uid).get();
+      const data = doc.data();
+      document.getElementById("studentName").textContent = data.name || "Student";
+      if (data.profilePic) {
+        document.getElementById("profilePic").src = data.profilePic;
+      }
+
+      // Load payments
+      loadPayments();
+    });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+
+    // ✅ Profile Image Upload
+    document.getElementById("profilePicInput").addEventListener("change", async function () {
+      const file = this.files[0];
+      if (!file || !currentUser) return;
+
+      const storageRef = storage.ref(`profiles/${currentUser.uid}/profile.jpg`);
+      await storageRef.put(file);
+      const downloadURL = await storageRef.getDownloadURL();
+
+      await db.collection("users").doc(currentUser.uid).update({
+        profilePic: downloadURL
+      });
+
+      document.getElementById("profilePic").src = downloadURL;
+      alert("✅ Profile picture updated!");
+    });
+
+    // ✅ Submit Payment
+    function submitPayment() {
+      const amount = document.getElementById("amount").value;
+      const method = document.getElementById("method").value;
+      const transaction = document.getElementById("transaction").value;
+      const file = document.getElementById("screenshot").files[0];
+
+      if (!amount || !method || !transaction || !file) {
+        alert("❌ Please fill all fields and upload your screenshot.");
+        return;
+      }
+
+      const user = auth.currentUser;
+      const storageRef = storage.ref(`payments/${user.uid}/${Date.now()}_${file.name}`);
+
+      storageRef.put(file)
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then(downloadURL => {
+          return db.collection("payments").add({
+            userId: user.uid,
+            email: user.email,
+            amount: parseFloat(amount),
+            method,
+            transactionId: transaction,
+            screenshotUrl: downloadURL,
+            status: "Pending",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        })
+        .then(() => {
+          alert("✅ Payment submitted successfully.");
+          document.getElementById("amount").value = "";
+          document.getElementById("method").selectedIndex = 0;
+          document.getElementById("transaction").value = "";
+          document.getElementById("screenshot").value = "";
+          loadPayments(); // Refresh payment history
+        })
+        .catch(error => {
+          console.error("Payment submission error:", error);
+          alert("❌ Failed to submit payment.");
+        });
+    }
+
+    // ✅ Load Payments
+    function loadPayments() {
+      const paymentStatusBox = document.getElementById("paymentStatusBox");
+      const paymentHistoryBox = document.getElementById("userPayments");
+
+      paymentStatusBox.innerHTML = "Loading...";
+      paymentHistoryBox.innerHTML = "Loading...";
+
+      db.collection("payments")
+        .where("userId", "==", currentUser.uid)
+        .orderBy("createdAt", "desc")
+        .get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            paymentStatusBox.innerHTML = "❌ No payments found.";
+            paymentHistoryBox.innerHTML = "❌ No payments found.";
+            return;
+          }
+
+          let latestStatus = "";
+          let html = "";
+
+          snapshot.forEach((doc, index) => {
+            const data = doc.data();
+            if (index === 0) {
+              latestStatus = `
+                <strong>Status:</strong> <span style="color:${data.status === 'Approved' ? 'green' : 'orange'};">${data.status}</span><br>
+                <a href="${data.screenshotUrl}" target="_blank">View Screenshot</a>
+              `;
+            }
+
+            html += `
+              <div style="margin-top: 10px; padding: 10px; border: 1px solid #ccc;">
+                <strong>Amount:</strong> PKR ${data.amount}<br>
+                <strong>Method:</strong> ${data.method}<br>
+                <strong>Transaction ID:</strong> ${data.transactionId}<br>
+                <strong>Status:</strong> <span style="color:${data.status === 'Approved' ? 'green' : 'orange'};">${data.status}</span><br>
+                <a href="${data.screenshotUrl}" target="_blank">View Screenshot</a>
+              </div>
+            `;
+          });
+
+          paymentStatusBox.innerHTML = latestStatus;
+          paymentHistoryBox.innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Error loading payments:", error);
+          paymentStatusBox.innerHTML = "❌ Error loading payment.";
+          paymentHistoryBox.innerHTML = "❌ Error loading payment history.";
+        });
+    }
+  </script>
+</body>
+</html>
