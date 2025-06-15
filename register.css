@@ -1,20 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-button, input, textarea {
-  width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-.contact-form label {
-  font-size: 0.95rem;
-  display: block;
-  margin-bottom: 5px;
-}
 /* Reset & Base */
 * {
   margin: 0;
@@ -262,46 +245,4 @@ body::after {
 
 .payment-section .submit-btn:hover {
   background-color: #218838;
-}
-/* Responsive section container */
-.about-container, .contact-container, .course-grid, .book-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-/* Images should resize */
-img {
-  @media (max-width: 768px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  nav a {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .feature-box, .contact-form-box, .contact-info-box {
-    text-align: center;
-    padding: 10px;
-  }
-
-  .back-arrow {
-    margin: 10px;
-    display: inline-block;
-  }
-}
-
-  max-width: 100%;
-  height: auto;
-  display: block;
 }
