@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js"></script>
+
+</head>
+<body class="login-background">
+
+  <div class="glow-bg"></div>
+  <a href="index.html" class="back-arrow"><i>&larr;</i> Back</a>
+
+  <section class="form-section glass-effect">
+    <h2>Login</h2>
+    <form class="form-box" onsubmit="return loginUser(event)">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage" style="color:red; margin-top: 10px;"></p>
+  </section>
+
+  <script>
+    // ✅ Your Firebase config (replace with your actual values)
+    const firebaseConfig = {
+  apiKey: "AIzaSyCAAbxJ_tnUQCVLtJrBxPYKq7cYFnabhNk",
+  authDomain: "alkhadija-e0cbb.firebaseapp.com",
+  projectId: "alkhadija-e0cbb",
+  storageBucket: "alkhadija-e0cbb.appspot.com",
+  messagingSenderId: "129990677542",
+  appId: "1:129990677542:web:bf397865475d7c777d02e7",
+  measurementId: "G-4DB1FCEB2P"
+};
+
+
+    // ✅ Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // ✅ Login function
+    function loginUser(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userUID", user.uid);
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          document.getElementById("loginMessage").textContent = error.message;
+        });
+    }
+  </script>
+</body>
+</html>
