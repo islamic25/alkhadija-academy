@@ -103,10 +103,7 @@
             // Send email verification
             return user.sendEmailVerification();
           }).then(() => {
-            // WhatsApp notification
-            const phoneNumber = "923421046878";
-            const msg = `🕌 New Registration:%0A👤 Name: ${name}%0A📧 Email: ${email}%0A📘 Course: ${course}`;
-            window.open(`https://wa.me/${phoneNumber}?text=${msg}`, "_blank");
+          
 
             messageBox.style.color = "green";
             messageBox.textContent = "✅ Registered! Please check your email and verify your account.";
