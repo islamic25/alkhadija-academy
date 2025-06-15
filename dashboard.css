@@ -1,0 +1,192 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: #f4f1ea;
+  color: #004225;
+  line-height: 1.6;
+}
+
+/* Layout */
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #004225;
+  color: #fff;
+  width: 100%;
+  max-width: 280px;
+  padding: 20px;
+  flex: 1 1 250px;
+}
+
+.profile-box {
+  text-align: center;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #d4af37;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#profilePicInput {
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+}
+
+.logout-btn {
+  background-color: #d4af37;
+  border: none;
+  padding: 10px 20px;
+  color: #004225;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.logout-btn:hover {
+  background-color: #c39c2d;
+}
+
+/* Main Content */
+.main-content {
+  flex: 3 1 700px;
+  padding: 30px;
+}
+
+/* Header */
+.dashboard-header {
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 28px;
+  border-bottom: 3px solid #004225;
+  padding-bottom: 10px;
+}
+
+/* Section */
+.dashboard-section {
+  margin-bottom: 40px;
+}
+
+.dashboard-section h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #004225;
+}
+
+/* Course List */
+#courseList {
+  list-style-type: none;
+}
+
+#courseList li {
+  background-color: #e6ebe0;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-left: 4px solid #d4af37;
+}
+
+/* Timetable Table */
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timetable th,
+.timetable td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.timetable th {
+  background-color: #004225;
+  color: #fff;
+}
+
+/* Payment Section */
+label {
+  display: block;
+  margin: 12px 0 5px;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+}
+
+.submit-btn {
+  background-color: #004225;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  margin-top: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #00311a;
+}
+
+#paymentStatusBox {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #e6ebe0;
+  border-left: 4px solid #004225;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: none;
+    text-align: center;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-section h2 {
+    font-size: 20px;
+  }
+}
