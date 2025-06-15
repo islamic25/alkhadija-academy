@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="login.css" />
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="login-background">
+
+  <div class="glow-bg"></div>
+  <a href="index.html" class="back-arrow"><i>&larr;</i> Back</a>
+
+  <section class="form-section glass-effect">
+    <h2>Login</h2>
+    <form class="form-box" onsubmit="return loginUser(event)">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage" style="color:red; margin-top: 10px;"></p>
+  </section>
+
+  <!-- Firebase Config & Login Script -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCAAbxJ_tnUQCVLtJrBxPYKq7cYFnabhNk",
+      authDomain: "alkhadija-e0cbb.firebaseapp.com",
+      projectId: "alkhadija-e0cbb",
+      storageBucket: "alkhadija-e0cbb.appspot.com",
+      messagingSenderId: "129990677542",
+      appId: "1:129990677542:web:bf397865475d7c777d02e7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function loginUser(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("loginMessage");
+      message.textContent = "Logging in...";
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          if (user.emailVerified) {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userUID", user.uid);
+            // ✅ Redirect to home instead of dashboard
+            window.location.href = "home.html";
+          } else {
+            message.textContent = "❗ Email not verified. Please check your inbox.";
+            user.sendEmailVerification().then(() => {
+              message.textContent += " 📩 Verification link sent again.";
+            });
+          }
+        })
+        .catch((error) => {
+          message.textContent = "❌ " + error.message;
+        });
+    }
+  </script>
+
+</body>
+</html>
